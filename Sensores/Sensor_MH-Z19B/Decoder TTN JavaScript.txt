@@ -9,7 +9,7 @@ function Decoder(bytes, port) {
 
   rawCO2 = bytes[3] + (bytes[2] * 256);
 
-  decoded.CO2 = sflt162f(rawCO2) * 1000;
+  decoded.CO2 = sflt162f(rawCO2) * 10000;
   
   return decoded;
 }
