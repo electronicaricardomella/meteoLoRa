@@ -277,7 +277,7 @@ void do_send(osjob_t* j) {
 void setup() {
   Serial.begin(115200);
   Serial.println(F("Starting"));
-  weatherMeterKit.setADCResolutionBits(10);
+  //weatherMeterKit.setADCResolutionBits(10);
   weatherMeterKit.begin();
 
 
