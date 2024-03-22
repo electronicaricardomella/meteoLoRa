@@ -4,7 +4,7 @@
 
 // Pins for Weather Carrier with ESP32 Processor Board
 int windDirectionPin = 35;
-int windSpeedPin = 14;
+int windSpeedPin = 13;
 int rainfallPin = 27;
 
 // Pins for the Weather Shield with SparkFun RedBoard Qwiic or Arduino Uno
