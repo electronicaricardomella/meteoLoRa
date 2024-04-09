@@ -1,0 +1,9 @@
+Direcciones I2C:
+Sensores DFRobot Gas
+CO :   0x60
+NO2 :  0x61
+
+
+
+BME280 GYBMEP:      0x76
+BME280 ADAFRUIT :   0x77
