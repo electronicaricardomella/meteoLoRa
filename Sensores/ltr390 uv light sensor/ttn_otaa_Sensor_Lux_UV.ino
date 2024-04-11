@@ -241,12 +241,18 @@ void do_send(osjob_t* j){
         //float rHumidity = bme.readHumidity();
         ltr390.setMode(ltr390.eUVSMode);//Set UV mode
         uint32_t Indice_UV = 0;
+        float Indice_UV_float = 0;
         Indice_UV = ltr390.readOriginalData();//Get UV raw data
         Serial.print("Indice UV: ");
         Serial.println(Indice_UV);
         delay(1000);
         // adjust for the f2sflt16 range (-1 to 1)
-        //data = data / 100;
+
+        Indice_UV_float = float(Indice_UV);
+        Serial.print("Indice UV_float: ");
+        Serial.println(Indice_UV_float);
+
+        Indice_UV_float = Indice_UV_float / 10;
 
         // float -> int
         // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
@@ -258,8 +264,9 @@ void do_send(osjob_t* j){
         payload[0] = LuminosidadLow;
         payload[1] = LuminosidadHigh;
 
+       
         // float -> int
-        uint16_t payloadIndice_UV = LMIC_f2sflt16(Indice_UV);
+        uint16_t payloadIndice_UV = LMIC_f2sflt16(Indice_UV_float);
         // int -> bytes
         byte Indice_UVLow = lowByte(payloadIndice_UV);
         byte Indice_UVHigh = highByte(payloadIndice_UV);
