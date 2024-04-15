@@ -1,7 +1,7 @@
 Direcciones I2C:
 Sensores DFRobot Gas
 NO INSTALADO ---- > CO :   0x60
-NO2 :  0x61
+NO2 (SEN0471) :  0x61
 S02 (SEN0470) :  0x
 O3 (SEN0472) :  0x
 
