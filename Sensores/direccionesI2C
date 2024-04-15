@@ -1,9 +1,12 @@
 Direcciones I2C:
 Sensores DFRobot Gas
-CO :   0x60
+NO INSTALADO ---- > CO :   0x60
 NO2 :  0x61
-Sensor de calidad del aire ENS160 - SEN0515 : 0x53
+S02 (SEN0470) :  0x
+O3 (SEN0472) :  0x
 
+
+Sensor de calidad del aire ENS160 - SEN0515 : 0x53
 
 BME280 GYBMEP:      0x76
 BME280 ADAFRUIT :   0x77
