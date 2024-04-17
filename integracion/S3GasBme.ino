@@ -3,10 +3,19 @@
 
 void setup() {
   Serial.begin(9600);
+  Serial1.begin(9600, SERIAL_8N1, 18, 17);
+  //Serial2.begin(9600, SERIAL_8N1, 1, 2);
   Serial.println(F("Iniciando periféricos ..."));
   WiFi.disconnect(true);  // Desconecta de la red
   WiFi.mode(WIFI_OFF);    // Switch WiFi off
-  btStop(); 
+  btStop();
+  
+  anem.begin(dirAnem, Serial1);
+  pira.begin(dirPira, Serial1);
+  pluv.begin(dirPluv, Serial1);
+  vele.begin(dirVele, Serial1);
+
+ 
   SPI.begin(SCK,MISO,MOSI,SS);
   Wire.begin(SDA_PIN, SCL_PIN);         
   delay(100); 
@@ -58,19 +67,20 @@ void setup() {
   ENS160.setPWRMode(ENS160_STANDARD_MODE);
   ENS160.setTempAndHum(/*temperature=*/21.0, /*humidity=*/60.0);
   // *** Sensores de corriente ***
-  if (!iCarga.begin(&Wire))
+  if (!batCarga.begin(&Wire))
   {
     Serial.println("Sensor de corriente de carga no encontrado");
     while (1) { delay(10); }
   }
   Serial.println("Sensor de corriente de carga conectado correctamente !");
-  if (!iDescarga.begin(&Wire))
+  batCarga.setCalibration_32V_2A(); //batCarga.setCalibration_32V_1A();
+  if (!batDescarga.begin(&Wire))
   {
     Serial.println("Sensor de corriente de descarga no encontrado");
     while (1) { delay(10); }
   }
   Serial.println("Sensor de corriente de descarga conectado correctamente !");
-
+  batDescarga.setCalibration_32V_2A(); // batDescarga.setCalibration_32V_1A();
   
   delay(500); 
     // LMIC init
@@ -83,6 +93,93 @@ void setup() {
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
 }
+
+void leeSensores() {
+
+  Serial.println("---------- Values ----------");
+  int temp = bme.readTemperature() * 100.0F; Serial.print("Temperature = ");  Serial.print(temp / 100.0F, 2);  Serial.println(" *C");
+  int pres = bme.readPressure() / 10.0F;  Serial.print("Pressure = ");  Serial.print(pres / 10.0F, 1);  Serial.println(" mbar (abs)");
+  int humi = bme.readHumidity() * 100.0F; Serial.print("Humidity = ");  Serial.print(humi / 100.0F, 2);  Serial.println(" % (rel)");
+  int airQ = ENS160.getAQI(); Serial.print("Air Quality = ");  Serial.println(airQ);
+  int eCO2 = ENS160.getECO2(); Serial.print("eCO2 = ");  Serial.println(eCO2);
+  int TVOC = ENS160.getTVOC(); Serial.print("TVOC = ");  Serial.println(TVOC);
+  //int COppm = CO.readGasConcentrationPPM(); Serial.print("CO = ");  Serial.print(COppm);  Serial.println(" ppm");
+  int NO2ppm = NO2.readGasConcentrationPPM() * 10; Serial.print("NO2 = ");  Serial.print(NO2ppm / 10.0F, 1);  Serial.println(" ppm");
+  int O3ppm = O3.readGasConcentrationPPM() * 10; Serial.print("O3 = ");  Serial.print(O3ppm / 10.0F, 1);  Serial.println(" ppm");
+  int SO2ppm = SO2.readGasConcentrationPPM() * 10; Serial.print("SO2 = ");  Serial.print(SO2ppm / 10.0F, 1);  Serial.println(" ppm");
+  int vCarga = batCarga.getBusVoltage_V() * 100; Serial.print("V Carga = ");  Serial.print(vCarga / 100.0F, 1);  Serial.println(" V");
+  int iCarga = batCarga.getCurrent_mA() * 10; Serial.print("I Carga = ");  Serial.print(iCarga / 10.0F, 1);  Serial.println(" mA");
+  int vDescarga = batDescarga.getBusVoltage_V() * 100; Serial.print("V Descarga = ");  Serial.print(vDescarga / 100.0F, 1);  Serial.println(" V");
+  int iDescarga = batDescarga.getCurrent_mA() * 10; Serial.print("I Descarga = ");  Serial.print(iDescarga / 10.0F, 1);  Serial.println(" mA");
+  
+  anem.getRegisters(0x03, 0x00, 1); // Sale multiplicada por 10
+  int velVento = anem.uint16FromFrame(bigEndian, 3); Serial.print("Vel vento: = ");  Serial.print(velVento/10);  Serial.println(" m/s");
+  pira.getRegisters(0x03, 0x01, 1); 
+  int radSolar = pira.uint16FromFrame(bigEndian, 3); Serial.print("Rad solar: = ");  Serial.print(radSolar);  Serial.println(" W/m2");
+  pluv.getRegisters(0x03, 0x00, 1); // Sale multiplicada por 10
+  int preci = pluv.uint16FromFrame(bigEndian, 3); Serial.print("Precipitación: = ");  Serial.print(preci/10);  Serial.println(" L/m2");
+  vele.getRegisters(0x03, 0x01, 1); 
+  int dirVento= vele.uint16FromFrame(bigEndian, 3);Serial.print("Dir vento: = ");  Serial.print(dirVento);  Serial.println(" º");
+  
+  
+  Serial.println();
+  // Little Endian
+  // datasend Bytes LSB|MSB: temp|temp|pres|pres|humi|humi|AirQ|eCO2|eCO2|TVOC|TVOC|NO2ppm|O3|SO2|vCarga|iCarga|
+  datasend[0] = temp;
+  datasend[1] = temp >> 8;
+  datasend[2] = pres;
+  datasend[3] = pres >> 8;
+  datasend[4] = humi;
+  datasend[5] = humi >> 8;
+  datasend[6] = airQ;
+  datasend[7] = eCO2;
+  datasend[8] = eCO2 >> 8;
+  datasend[9] = TVOC;
+  datasend[10] = TVOC >> 8;
+  //datasend[11] = COppm;
+  //datasend[12] = COppm >> 8;
+  datasend[11] = NO2ppm;
+  datasend[12] = O3ppm;
+  datasend[13] = SO2ppm;
+  datasend[14] = vCarga;
+  datasend[15] = vCarga >> 8;
+  datasend[16] = iCarga;
+  datasend[17] = iCarga >> 8;
+  datasend[18] = vDescarga;
+  datasend[19] = vDescarga >> 8;
+  datasend[20] = iDescarga;
+  datasend[21] = iDescarga >> 8;
+  datasend[22] = velVento;
+  datasend[23] = velVento >> 8;
+  datasend[24] = radSolar;
+  datasend[25] = radSolar >> 8;
+  datasend[26] = preci;
+  datasend[27] = preci >> 8;
+  datasend[28] = dirVento;
+  datasend[29] = dirVento >> 8;  
+
+  
+   
+  Serial.print("Paquete : ");
+  uint8_t i;
+  for (i=0;i<sizeof(datasend)-1;i++){
+    if (i%2 ==0) Serial.print(" ");
+    Serial.printf("%02X",datasend[i]);    
+  }
+  Serial.println("");
+  Serial.println("----------------------------");
+}
+
+void loop() {
+    os_runloop_once();
+}
+void siesta()
+{
+  Serial.flush();
+  esp_sleep_enable_timer_wakeup(INTERVALO * 1000000); 
+  esp_deep_sleep_start();
+}
+
 void printHex2(unsigned v) {
     v &= 0xff;
     if (v < 16)
@@ -207,71 +304,4 @@ void do_send(osjob_t* j){
         Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.
-}
-
-void loop() {
-    os_runloop_once();
-}
-void siesta()
-{
-  Serial.flush();
-  esp_sleep_enable_timer_wakeup(INTERVALO * 1000000); 
-  esp_deep_sleep_start();
-}
-
-void leeSensores() {
-
-  Serial.println("---------- Values ----------");
-  int temp = bme.readTemperature() * 100.0F; Serial.print("Temperature = ");  Serial.print(temp / 100.0F, 2);  Serial.println(" *C");
-  int pres = bme.readPressure() / 10.0F;  Serial.print("Pressure = ");  Serial.print(pres / 10.0F, 1);  Serial.println(" mbar (abs)");
-  int humi = bme.readHumidity() * 100.0F; Serial.print("Humidity = ");  Serial.print(humi / 100.0F, 2);  Serial.println(" % (rel)");
-  int airQ = ENS160.getAQI(); Serial.print("Air Quality = ");  Serial.println(airQ);
-  int eCO2 = ENS160.getECO2(); Serial.print("eCO2 = ");  Serial.println(eCO2);
-  int TVOC = ENS160.getTVOC(); Serial.print("TVOC = ");  Serial.println(TVOC);
-  //int COppm = CO.readGasConcentrationPPM(); Serial.print("CO = ");  Serial.print(COppm);  Serial.println(" ppm");
-  int NO2ppm = NO2.readGasConcentrationPPM() * 10; Serial.print("NO2 = ");  Serial.print(NO2ppm / 10.0F, 1);  Serial.println(" ppm");
-  int O3ppm = O3.readGasConcentrationPPM() * 10; Serial.print("O3 = ");  Serial.print(O3ppm / 10.0F, 1);  Serial.println(" ppm");
-  int SO2ppm = SO2.readGasConcentrationPPM() * 10; Serial.print("SO2 = ");  Serial.print(SO2ppm / 10.0F, 1);  Serial.println(" ppm");
-  int vCarga = iCarga.getBusVoltage_V() * 100; Serial.print("V Carga = ");  Serial.print(vCarga / 100.0F, 1);  Serial.println(" V");
-  int intCarga = iCarga.getCurrent_mA() * 10; Serial.print("I Carga = ");  Serial.print(intCarga / 10.0F, 1);  Serial.println(" mA");
-  int vDescarga = iDescarga.getBusVoltage_V() * 100; Serial.print("V Descarga = ");  Serial.print(vDescarga / 100.0F, 1);  Serial.println(" V");
-  int intDescarga = iDescarga.getCurrent_mA() * 10; Serial.print("I Descarga = ");  Serial.print(intDescarga / 10.0F, 1);  Serial.println(" mA");
-  
-  
-  Serial.println();
-  // datasend Bytes LSB|MSB: temp|temp|pres|pres|humi|humi|AirQ|eCO2|eCO2|TVOC|TVOC|NO2ppm|O3
-  datasend[0] = temp;
-  datasend[1] = temp >> 8;
-  datasend[2] = pres;
-  datasend[3] = pres >> 8;
-  datasend[4] = humi;
-  datasend[5] = humi >> 8;
-  datasend[6] = airQ;
-  datasend[7] = eCO2;
-  datasend[8] = eCO2 >> 8;
-  datasend[9] = TVOC;
-  datasend[10] = TVOC >> 8;
-  //datasend[11] = COppm;
-  //datasend[12] = COppm >> 8;
-  datasend[11] = NO2ppm;
-  datasend[12] = O3ppm;
-  datasend[13] = SO2ppm;
-  datasend[14] = vCarga;
-  datasend[15] = vCarga >> 8;
-  datasend[16] = intCarga;
-  datasend[17] = intCarga >> 8;
-  datasend[14] = vDescarga;
-  datasend[15] = vDescarga >> 8;
-  datasend[16] = intDescarga;
-  datasend[17] = intDescarga >> 8;
-  
-   
-  Serial.print("Paquete : ");
-  uint8_t i;
-  for (i=0;i<sizeof(datasend)-1;i++){
-    if (i%2 ==0) Serial.print(" ");
-    Serial.printf("%02X",datasend[i]);    
-  }
-  Serial.println("");
-  Serial.println("----------------------------");
 }

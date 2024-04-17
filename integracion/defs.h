@@ -10,6 +10,7 @@
 #include <DFRobot_MultiGasSensor.h>
 #include <DFRobot_ENS160.h>
 #include <Adafruit_INA219.h>
+#include <SensorModbusMaster.h>
 
 #define INTERVALO 60  // 1 minuto de siesta
 #define SCK 10 // GPIO41 -- SX1278's SCK3
@@ -27,20 +28,27 @@
 #define I2C_SO2 0x74
 #define I2C_O3 0x75
 #define I2C_ENS160 0x53
-#define I2C_iCarga 0x40
-#define I2C_iDescarga 0x41
-
+#define I2C_batCarga 0x40
+#define I2C_batDescarga 0x41
+#define dirAnem 0x01
+#define dirPira 0x02
+#define dirPluv 0x03
+#define dirVele 0x04
 
 //DFRobot_GAS_I2C CO(&Wire ,I2C_CO); Retirado
 DFRobot_GAS_I2C NO2(&Wire ,I2C_NO2);
 DFRobot_GAS_I2C SO2(&Wire ,I2C_SO2);
 DFRobot_GAS_I2C O3(&Wire ,I2C_O3);
-Adafruit_INA219 iCarga(I2C_iCarga);
-Adafruit_INA219 iDescarga(I2C_iDescarga);
+Adafruit_INA219 batCarga(I2C_batCarga);
+Adafruit_INA219 batDescarga(I2C_batDescarga);
 DFRobot_ENS160_I2C ENS160(&Wire,I2C_ENS160);
 Adafruit_BME280 bme;
+modbusMaster anem;
+modbusMaster pira;
+modbusMaster pluv;
+modbusMaster vele;
 
-uint8_t datasend[30];
+uint8_t datasend[35];
 
 static osjob_t sendjob;
 
