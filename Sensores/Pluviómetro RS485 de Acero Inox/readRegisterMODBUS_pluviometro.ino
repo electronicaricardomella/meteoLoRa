@@ -20,8 +20,8 @@ The register numbers in this example happen to be for an S::CAN oxy::lyser.
 // ---------------------------------------------------------------------------
 
 // Define the sensor's modbus address
-byte modbusAddress = 0x01;   // The sensor's modbus address, or SlaveID
-long modbusBaudRate = 4800; // The baud rate the sensor uses
+byte modbusAddress = 0x03;   // The sensor's modbus address, or SlaveID
+long modbusBaudRate = 9600; // The baud rate the sensor uses
 
 uint16_t lluvia = 0;  // cantidad de lluvia total caída
 float lluvia_mm = 0; // cantidad de lluvia total caída en milímetros
@@ -73,7 +73,7 @@ void setup()
 void loop()
 {
    
-  bool success = modbus.getRegisters(0x03, 0x01, 1); //leer el holding register 0x01
+  bool success = modbus.getRegisters(0x03, 0x00, 1); //leer el holding register 0x00
     // ^ This gets the values and stores them in an internal "frame" with the hex values of the response
   Serial.print("success: ");
   Serial.println(success);
