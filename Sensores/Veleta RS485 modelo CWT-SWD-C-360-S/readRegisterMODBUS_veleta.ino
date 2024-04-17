@@ -20,8 +20,8 @@ The register numbers in this example happen to be for an S::CAN oxy::lyser.
 // ---------------------------------------------------------------------------
 
 // Define the sensor's modbus address
-byte modbusAddress = 0x01;   // The sensor's modbus address, or SlaveID
-long modbusBaudRate = 4800; // The baud rate the sensor uses
+byte modbusAddress = 0x04;   // The sensor's modbus address, or SlaveID
+long modbusBaudRate = 9600; // The baud rate the sensor uses
 
 uint16_t grados = 0;
 
