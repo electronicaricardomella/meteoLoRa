@@ -1,10 +1,9 @@
 #include "defs.h"
 #include "TTNdata.h"
-
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600, SERIAL_8N1, 18, 17);
-  //Serial2.begin(9600, SERIAL_8N1, 1, 2);
+  Serial2.begin(9600, SERIAL_8N1, 1, 2);
   Serial.println(F("Iniciando periféricos ..."));
   WiFi.disconnect(true);  // Desconecta de la red
   WiFi.mode(WIFI_OFF);    // Switch WiFi off
@@ -15,7 +14,9 @@ void setup() {
   pluv.begin(dirPluv, Serial1);
   vele.begin(dirVele, Serial1);
 
- 
+  pms.passiveMode();
+  pms.wakeUp();
+  
   SPI.begin(SCK,MISO,MOSI,SS);
   Wire.begin(SDA_PIN, SCL_PIN);         
   delay(100); 
@@ -121,8 +122,20 @@ void leeSensores() {
   vele.getRegisters(0x03, 0x01, 1); 
   int dirVento= vele.uint16FromFrame(bigEndian, 3);Serial.print("Dir vento: = ");  Serial.print(dirVento);  Serial.println(" º");
   
+  PMS::DATA data;
+
+  // Clear buffer (removes potentially old data) before read. Some data could have been also sent before switching to passive mode.
+  while (Serial2.available()) { Serial2.read(); }
+  pms.requestRead();
+  if (pms.readUntil(data))  {	Serial.println("Datos de partículas: ");  }
+  else  {    Serial.println("No hay datos de partículas.");  }
   
-  Serial.println();
+  int part1u = data.PM_SP_UG_1_0; Serial.print("Partículas <1 ug = ");  Serial.print(part1u);  Serial.println(" ug/m3");
+  int part2u5 = data.PM_SP_UG_2_5; Serial.print("Partículas <2.5 ug = ");  Serial.print(part2u5);  Serial.println(" ug/m3");
+  int part10u = data.PM_SP_UG_10_0; Serial.print("Partículas <10 ug = ");  Serial.print(part10u);  Serial.println(" ug/m3");
+  CO2.send_read_cmd();  delay(500);  CO2.receive_read_cmd();
+  int CO2ppm = CO2.get_last_received_reading();
+  
   // Little Endian
   // datasend Bytes LSB|MSB: temp|temp|pres|pres|humi|humi|AirQ|eCO2|eCO2|TVOC|TVOC|NO2ppm|O3|SO2|vCarga|iCarga|
   datasend[0] = temp;
@@ -157,9 +170,17 @@ void leeSensores() {
   datasend[27] = preci >> 8;
   datasend[28] = dirVento;
   datasend[29] = dirVento >> 8;  
+  datasend[30] = part1u;
+  datasend[31] = part1u >> 8; 
+  datasend[32] = part2u5;
+  datasend[33] = part2u5 >> 8;
+  datasend[34] = part10u;
+  datasend[35] = part10u >> 8;
+  datasend[36] = CO2ppm;
+  datasend[37] = CO2ppm >> 8;
+
 
   
-   
   Serial.print("Paquete : ");
   uint8_t i;
   for (i=0;i<sizeof(datasend)-1;i++){
