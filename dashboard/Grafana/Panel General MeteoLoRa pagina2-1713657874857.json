@@ -1,0 +1,190 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Introdución y presentación del proyecto MeteoLoRa",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 37,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "link1"
+      ],
+      "targetBlank": false,
+      "title": "New link",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 45,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<span style=\"display:block; text-align:center; color:purple; font-size:46px;font-weight:bold;\">PROXECTO METEOLORA</span>\n\n<span style=\"display:block; text-align:center; color:white; font-size:36px; font-weight:bold;\">IES Ricardo Mella 2024</span>\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "da49b45d-680a-4f22-a8e9-3b50385d9dcc"
+      },
+      "description": "Breve resumo do proxecto",
+      "gridPos": {
+        "h": 17,
+        "w": 9,
+        "x": 8,
+        "y": 0
+      },
+      "id": 46,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<span style=\"display:block; text-align:center; color:purple; font-size:30px;font-weight:bold;\">PROXECTO</span>\n\n\n<div style=\"display: flex; justify-content: center;\">\n    <img src=\"https://storage.googleapis.com/meteolora_bucket/compo%C3%B1entes.png\" alt=\"Compoñentes do sistema\" style=\"width:70%;height:auto;\">\n</div>\n",
+        "mode": "html"
+      },
+      "pluginVersion": "10.3.1",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 36,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<img src=\"https://storage.googleapis.com/meteolora_bucket/logo_meteolora.png\" alt=\"Texto alternativo\" width=\"100%\">",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 2,
+        "y": 12
+      },
+      "id": 38,
+      "options": {
+        "bgColor": "",
+        "clockType": "24 hour",
+        "countdownSettings": {
+          "endCountdownTime": "2023-11-15T07:07:56+01:00",
+          "endText": "00:00:00"
+        },
+        "countupSettings": {
+          "beginCountupTime": "2023-11-15T07:07:56+01:00",
+          "beginText": "00:00:00"
+        },
+        "dateSettings": {
+          "dateFormat": "YYYY-MM-DD",
+          "fontSize": "40px",
+          "fontWeight": "bold",
+          "locale": "es",
+          "showDate": true
+        },
+        "fontMono": false,
+        "mode": "time",
+        "refresh": "sec",
+        "timeSettings": {
+          "fontSize": "65px",
+          "fontWeight": "normal"
+        },
+        "timezone": "Europe/Madrid",
+        "timezoneSettings": {
+          "fontSize": "12px",
+          "fontWeight": "normal",
+          "showTimezone": false,
+          "zoneFormat": "offsetAbbv"
+        }
+      },
+      "pluginVersion": "2.1.5",
+      "transparent": true,
+      "type": "grafana-clock-panel"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "Europe/Madrid",
+  "title": "Panel General MeteoLoRa pagina2",
+  "uid": "f06aa697-7f4e-4d1c-b57a-a66dad577697",
+  "version": 3,
+  "weekStart": "sunday"
+}

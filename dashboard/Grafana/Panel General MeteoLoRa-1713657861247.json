@@ -1,0 +1,201 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Introdución y presentación del proyecto MeteoLoRa",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 36,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 45,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<span style=\"display:block; text-align:center; color:purple; font-size:46px;font-weight:bold;\">PROXECTO METEOLORA</span>\n\n<span style=\"display:block; text-align:center; color:white; font-size:36px; font-weight:bold;\">IES Ricardo Mella 2024</span>\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "da49b45d-680a-4f22-a8e9-3b50385d9dcc"
+      },
+      "description": "Breve resumo do proxecto",
+      "gridPos": {
+        "h": 11,
+        "w": 14,
+        "x": 9,
+        "y": 0
+      },
+      "id": 46,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<span style=\"display:block; text-align:center; color:purple; font-size:30px;font-weight:bold;\">PROXECTO</span>\n<div style=\"text-align: center; font-size: 25px; font-family: Arial, sans-serif; text-align: justify;\">\nCrear unhas maquetas didácticas para formar ao alumnado da familia\nprofesional de Electricidade e Electrónica na tecnoloxía inalámbrica LoRa (Long Range)\nou de longo alcance, que permite facer redes LPWAN (Low Power Wide Area Network) ou\nredes de baixo consumo. A tecnoloxía LoRa é unha das máis completas para proxectos\nde IoT (Internet of Things) ou internet das cousas.\nMeteoLoRa permitirá ao alumnado a construcción dunha estación meteorolóxica e\nmedioambiental profesional conectada á rede LoRaWAN que poderá ser utilizada en\nsectores coma na agricultura ou nas smart cities para medir variables meteorolóxicas, de\ncalidade do aire e contaminación atmosférica.\n</div>\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 36,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<img src=\"https://storage.googleapis.com/meteolora_bucket/logo_meteolora.png\" alt=\"Texto alternativo\" width=\"100%\">",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "da49b45d-680a-4f22-a8e9-3b50385d9dcc"
+      },
+      "description": "Breve resumo do proxecto",
+      "gridPos": {
+        "h": 10,
+        "w": 14,
+        "x": 9,
+        "y": 11
+      },
+      "id": 47,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<span style=\"display:block; text-align:center; color:purple; font-size:30px;font-weight:bold;\">FAMILIAS PROFESIONAIS E CICLOS IMPLICADOS</span>\n<div style=\"text-align: center; font-size: 25px; font-family: Arial, sans-serif; text-align: justify;t-weight:bold;\">\n\nFamilia: Electricidade e electrónica --> Ciclo Formativo de Grao Superior en Mantemento\nElectrónico do IES Ricardo Mella (Vigo)\n\nFamilia: Fabricación mecánica -->  Ciclo Formativo de Grao Superior en Programación da\nprodución do IES Politécnico de Vigo\n</div>\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "c07d2a14-8001-427b-9a09-3692bc179627"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 2,
+        "y": 12
+      },
+      "id": 38,
+      "options": {
+        "bgColor": "",
+        "clockType": "24 hour",
+        "countdownSettings": {
+          "endCountdownTime": "2023-11-15T07:07:56+01:00",
+          "endText": "00:00:00"
+        },
+        "countupSettings": {
+          "beginCountupTime": "2023-11-15T07:07:56+01:00",
+          "beginText": "00:00:00"
+        },
+        "dateSettings": {
+          "dateFormat": "YYYY-MM-DD",
+          "fontSize": "40px",
+          "fontWeight": "bold",
+          "locale": "es",
+          "showDate": true
+        },
+        "fontMono": false,
+        "mode": "time",
+        "refresh": "sec",
+        "timeSettings": {
+          "fontSize": "65px",
+          "fontWeight": "normal"
+        },
+        "timezone": "Europe/Madrid",
+        "timezoneSettings": {
+          "fontSize": "12px",
+          "fontWeight": "normal",
+          "showTimezone": false,
+          "zoneFormat": "offsetAbbv"
+        }
+      },
+      "pluginVersion": "2.1.5",
+      "transparent": true,
+      "type": "grafana-clock-panel"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": [
+    "link1"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "Europe/Madrid",
+  "title": "Panel General MeteoLoRa",
+  "uid": "eae9c8fb-b065-4aa5-858f-3d3263c92ef4",
+  "version": 7,
+  "weekStart": "sunday"
+}
