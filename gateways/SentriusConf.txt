@@ -4,8 +4,6 @@ Username: sentrius
 Password: RG1xx
 
 
-
-
 Servidor LNS
 wss://eu1.cloud.thethings.network:8887
 Usar .pem y .key adjuntos
