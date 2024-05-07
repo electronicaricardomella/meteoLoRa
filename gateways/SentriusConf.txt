@@ -1,0 +1,15 @@
+https://rg1xx2a15b1.local
+https://192.168.1.1
+Username: sentrius
+Password: RG1xx
+
+
+
+
+Servidor LNS
+wss://eu1.cloud.thethings.network:8887
+Usar .pem y .key adjuntos
+
+
+LNS API para generar la key
+NNSXS.K33ZGVFZBYDXQVWJOKS37HKDR3UD3X2K2KQHD3Q.MWXBGISRAUTGUNZTIGRLHMBJ6IZJJXJ33JIFERTNXAGZVP5XJQEA
