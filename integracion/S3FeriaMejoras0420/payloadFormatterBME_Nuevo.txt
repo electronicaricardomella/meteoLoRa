@@ -1,8 +1,9 @@
 function decodeUplink(input) {
   var data = {};
   // Reducir presión a nivel do mar
-  var altitude = 290.0;    // Gaiás
-  // var altitude = 183.0  // Ricardo Mella
+  //var altitude = 290.0;    // Gaiás
+  var altitude = 183.0  // Ricardo Mella
+  //var altitude = 28.0  // Politécnico
   var pre = ((input.bytes[3]<<8) + input.bytes[2])/10;
   var F1 = (Math.pow(1013.25, 0.190284) * 0.0065)/288;
 	var F2 = altitude/Math.pow((pre - 0.3), 0.190284);
@@ -28,7 +29,8 @@ function decodeUplink(input) {
   data.idescarga = ((input.bytes[21]<<8) + input.bytes[20])/10;
   //if (data.idescarga >=36768) { data.idescarga = (data.idescarga - 65536)};
   //data.idescarga = data.idescarga/10;
-  data.velvento = ((input.bytes[23]<<8) + input.bytes[22])/10;
+  var velventoms = ((input.bytes[23]<<8) + input.bytes[22]);
+  data.velvento = Math.round(velventoms * 3.6)/10;
   data.radsolar = ((input.bytes[25]<<8) + input.bytes[24]);
   data.preci = ((input.bytes[27]<<8) + input.bytes[26])/10;
   data.dirvento = ((input.bytes[29]<<8) + input.bytes[28]);
